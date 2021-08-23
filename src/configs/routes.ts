@@ -1,10 +1,10 @@
-import HomePage from '../pages/home'
-import PlotsPage from '../pages/plots'
+import HomePage from "../pages/home";
+import PlotsPage from "../pages/plots";
 
 export const Paths = {
-	HOME_PAGE: () => '/',
-	PLOTS_PAGE: () => '/plots',
-}
+	HOME_PAGE: () => "/",
+	PLOTS_PAGE: () => "/plots",
+};
 
 export const Routes = [
 	{
@@ -17,4 +17,4 @@ export const Routes = [
 		path: Paths.PLOTS_PAGE(),
 		component: PlotsPage,
 	},
-]
+];

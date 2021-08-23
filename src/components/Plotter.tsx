@@ -1,11 +1,23 @@
 import React from 'react'
+import Plot from 'react-plotly.js'
 
-const Plotter = () => {
+interface IPlotterProps {
+	data?: any
+	title?: string
+}
+
+const Plotter: React.FC<IPlotterProps>= ({data, title}) => {
 	return (
-		<div>
-			
-		</div>
+		<Plot
+			data={data}
+			layout={ {width: 900, height: 500, title } }
+      	/>
 	)
+}
+
+Plotter.defaultProps = {
+	data: [],
+	title: 'Plot'
 }
 
 export default Plotter

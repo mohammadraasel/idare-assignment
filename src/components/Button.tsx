@@ -34,4 +34,12 @@ const StyledButton = styled.button`
 	&.alert {
 		background-color: #DD2222;
 	}
+
+	&.upload {
+		background-color: white;
+		padding: 20px 30px;
+		border: 2px dashed grey;
+		color: black;
+		width: 100%;
+	}
 `
