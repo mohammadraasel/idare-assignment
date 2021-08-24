@@ -26,6 +26,6 @@ const CSVDownloader: React.FC<ICSVDownloaderProps> = ({
 
 CSVDownloader.defaultProps = {
 	filename: 'download',
-	buttonLabel: 'Download'
+	buttonLabel: 'Download CSV'
 }
 export default CSVDownloader

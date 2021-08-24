@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import Button from '../../components/Button'
 import CSVDownloader from '../../components/CSVDownloader'
 import Layout from '../../components/Layout'
+import PDFExporter from '../../components/PDFExporter'
 import Plotter from '../../components/Plotter'
 import Table from '../../components/Table'
 import { PlotType } from '../../constants/enums'
@@ -23,6 +23,11 @@ const tabItems = [
 		value: PlotType.HISTOGRAM
 	}
 ]
+
+const layoutConfig = {
+	height: 400,
+	width: 500,
+}
 
 const PlotsPage = () => {
 	const { columns, data } = useAppSelector(selectTableData)
@@ -94,7 +99,6 @@ const PlotsPage = () => {
 		]
 	}
 
-
 	return (
 		<Layout>
 			<StyledSection>
@@ -105,9 +109,23 @@ const PlotsPage = () => {
 			</StyledSection>
 			<StyledSection>
 				<div className="action">
-					<Button variant='primary'>
-						Download
-					</Button>
+					<PDFExporter>
+						<Plotter
+							layout={layoutConfig}
+							data={getPlotDataByType(PlotType.SCATTER)}
+							title={PlotType.SCATTER}
+						/>
+						<Plotter
+							layout={layoutConfig}
+							data={getPlotDataByType(PlotType.BOX)}
+							title={PlotType.BOX}
+						/>
+						<Plotter
+							layout={layoutConfig}
+							data={getPlotDataByType(PlotType.HISTOGRAM)}
+							title={PlotType.HISTOGRAM}
+						/>
+					</PDFExporter>
 				</div>
 				<div className="tabs">
 					{
