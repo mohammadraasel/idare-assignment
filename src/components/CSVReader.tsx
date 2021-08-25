@@ -1,42 +1,40 @@
-import React, { MouseEvent, useRef } from 'react';
-import { CSVReader as CSVPapaReader } from 'react-papaparse';
-import styled from 'styled-components';
-import { useAppDispatch } from '../hooks';
-import { setData } from '../redux/slices/stats-slice';
-import Button from './Button';
-import CloseIcon from './CloseIcon';
-
+import React, { MouseEvent, useRef } from "react";
+import { CSVReader as CSVPapaReader } from "react-papaparse";
+import styled from "styled-components";
+import { useAppDispatch } from "../hooks";
+import { setData } from "../redux/slices/stats-slice";
+import Button from "./Button";
+import CloseIcon from "./CloseIcon";
 
 const CSVReader: React.FC<any> = () => {
+	const buttonRef = useRef<any>();
+	const dispatch = useAppDispatch();
 
-	const buttonRef = useRef<any>()
-	const dispatch = useAppDispatch()
-
-	const handleOpenDialog = (e:MouseEvent<HTMLElement>) => {
+	const handleOpenDialog = (e: MouseEvent<HTMLElement>) => {
 		if (buttonRef.current) {
 			buttonRef.current.open(e);
 		}
-	}
+	};
 
 	const handleOnFileLoad = (data: any) => {
-		dispatch(setData(data))
-	}
+		dispatch(setData(data));
+	};
 
 	const handleOnError = (err: any, file: any, inputElem: any, reason: any) => {
-		console.log('---------------------------');
+		console.log("---------------------------");
 		console.log(err);
-		console.log('---------------------------');
-	}
+		console.log("---------------------------");
+	};
 
 	const handleOnRemoveFile = () => {
-		dispatch(setData([]))
-	}
+		dispatch(setData([]));
+	};
 
-	const handleRemoveFile = (e:MouseEvent<HTMLElement>) => {
+	const handleRemoveFile = (e: MouseEvent<HTMLElement>) => {
 		if (buttonRef.current) {
 			buttonRef.current.removeFile(e);
 		}
-	}
+	};
 
 	return (
 		<StyledUploader>
@@ -49,35 +47,22 @@ const CSVReader: React.FC<any> = () => {
 				onRemoveFile={handleOnRemoveFile}
 			>
 				{({ file }: any) => (
-				<div className='uploader'>
-					<Button
-						type="button"
-						onClick={handleOpenDialog}
-						variant='upload'
-					>
-						Click here to upload a file
-					</Button>
-					<div className="file">
-						<div className="filename">
-							{file && file.name}
+					<div className="uploader">
+						<Button type="button" onClick={handleOpenDialog} variant="upload">
+							Click here to upload a file
+						</Button>
+						<div className="file">
+							<div className="filename">{file && file.name}</div>
+							{file && <CloseIcon onClick={handleRemoveFile} />}
 						</div>
-						{
-							file &&
-							<CloseIcon
-								onClick={handleRemoveFile}
-							/>
-						}
 					</div>
-				</div>
 				)}
 			</CSVPapaReader>
-
 		</StyledUploader>
-	)
-}
+	);
+};
 
-export default CSVReader
-
+export default CSVReader;
 
 const StyledUploader = styled.div`
 	width: 100%;
@@ -93,4 +78,4 @@ const StyledUploader = styled.div`
 			margin-right: 10px;
 		}
 	}
-`
+`;

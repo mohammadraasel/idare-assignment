@@ -1,14 +1,13 @@
-import React from 'react'
-import { usePagination, useTable } from 'react-table'
-import styled from 'styled-components'
+import React from "react";
+import { usePagination, useTable } from "react-table";
+import styled from "styled-components";
 
 interface ITableData {
-	columns: any[],
-	data: any[]
+	columns: any[];
+	data: any[];
 }
 
 const Table: React.FC<ITableData> = ({ columns, data }) => {
-
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -24,102 +23,82 @@ const Table: React.FC<ITableData> = ({ columns, data }) => {
 		previousPage,
 		setPageSize,
 		state: { pageIndex, pageSize },
-	} = useTable({ columns, data }, usePagination) as any
+	} = useTable({ columns, data }, usePagination) as any;
 
 	return (
 		<Styles>
 			<table {...getTableProps()}>
-				<thead className='thead'>
-					{headerGroups.map((headerGroup:any) => (
-					<tr {...headerGroup.getHeaderGroupProps()}>
-						{headerGroup.headers.map((column:any) => (
-						<th
-							{...column.getHeaderProps()}
-						>
-							{column.render('Header')}
-						</th>
-						))}
-					</tr>
+				<thead className="thead">
+					{headerGroups.map((headerGroup: any) => (
+						<tr {...headerGroup.getHeaderGroupProps()}>
+							{headerGroup.headers.map((column: any) => (
+								<th {...column.getHeaderProps()}>{column.render("Header")}</th>
+							))}
+						</tr>
 					))}
 				</thead>
 				<tbody className="tbody" {...getTableBodyProps()}>
-					{page.map((row:any) => {
-						prepareRow(row)
-					return (
-						<tr {...row.getRowProps()}>
-						{row.cells.map((cell:any, idx:number) => {
-							return (
-							<td
-								{...cell.getCellProps()}
-								data-label={columns[idx]?.Header}
-							>
-								{cell.render('Cell')}
-							</td>
-							)
-						})}
-						</tr>
-					)
+					{page.map((row: any) => {
+						prepareRow(row);
+						return (
+							<tr {...row.getRowProps()}>
+								{row.cells.map((cell: any, idx: number) => {
+									return (
+										<td {...cell.getCellProps()} data-label={columns[idx]?.Header}>
+											{cell.render("Cell")}
+										</td>
+									);
+								})}
+							</tr>
+						);
 					})}
 				</tbody>
 			</table>
-			{
-				data.length > 0 &&
+			{data.length > 0 && (
 				<div className="pagination">
 					<div className="content">
 						<div className="next-prev">
-							<button
-								onClick={() => gotoPage(0)}
-								disabled={!canPreviousPage}
-							>
-								{'<<'}
-							</button>{' '}
-							<button
-								onClick={() => previousPage()}
-								disabled={!canPreviousPage}
-							>
-								{'<'}
-							</button>{' '}
-							<button
-								onClick={() => nextPage()}
-								disabled={!canNextPage}
-							>
-								{'>'}
-							</button>{' '}
-							<button
-								onClick={() => gotoPage(pageCount - 1)}
-								disabled={!canNextPage}
-							>
-								{'>>'}
-							</button>{' '}
+							<button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+								{"<<"}
+							</button>{" "}
+							<button onClick={() => previousPage()} disabled={!canPreviousPage}>
+								{"<"}
+							</button>{" "}
+							<button onClick={() => nextPage()} disabled={!canNextPage}>
+								{">"}
+							</button>{" "}
+							<button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+								{">>"}
+							</button>{" "}
 						</div>
 						<div className="page-info">
 							<span>
-								Page{' '}
+								Page{" "}
 								<strong>
 									{pageIndex + 1} of {pageOptions.length}
-								</strong>{' '}
+								</strong>{" "}
 							</span>
 							<span>
-								| Go to page:{' '}
-							<input
-								type="number"
-								defaultValue={pageIndex + 1}
-								onChange={e => {
-									const page = e.target.value ? Number(e.target.value) - 1 : 0
-									gotoPage(page)
-								}}
-								style={{ width: '100px' }}
-							/>
-							</span>{' '}
+								| Go to page:{" "}
+								<input
+									type="number"
+									defaultValue={pageIndex + 1}
+									onChange={(e) => {
+										const page = e.target.value ? Number(e.target.value) - 1 : 0;
+										gotoPage(page);
+									}}
+									style={{ width: "100px" }}
+								/>
+							</span>{" "}
 						</div>
 						<div className="page-show">
 							<select
 								value={pageSize}
-								onChange={e => {
-									setPageSize(Number(e.target.value))
+								onChange={(e) => {
+									setPageSize(Number(e.target.value));
 								}}
 							>
-								{[10, 20, 30, 40, 50, 100].map(pageSize => (
+								{[10, 20, 30, 40, 50, 100].map((pageSize) => (
 									<option key={pageSize} value={pageSize}>
 										Show {pageSize}
 									</option>
@@ -128,17 +107,17 @@ const Table: React.FC<ITableData> = ({ columns, data }) => {
 						</div>
 					</div>
 				</div>
-			}
+			)}
 		</Styles>
-  	)
-}
+	);
+};
 
 Table.defaultProps = {
 	columns: [],
-	data: []
-}
+	data: [],
+};
 
-export default Table
+export default Table;
 
 const Styles = styled.div`
 	padding: 2rem 0;
@@ -152,13 +131,13 @@ const Styles = styled.div`
 
 		tr {
 			border: 1px solid rgba(0, 0, 0, 0.33);
-			padding: .35em;
+			padding: 0.35em;
 			color: rgba(0, 0, 0, 0.33);
 			font-size: 14px;
 		}
 
 		td {
-			padding: .625em;
+			padding: 0.625em;
 			text-align: center;
 			border-bottom: 1px solid rgba(0, 0, 0, 0.33);
 			border-right: 1px solid rgba(0, 0, 0, 0.33);
@@ -171,9 +150,9 @@ const Styles = styled.div`
 
 		th {
 			font-size: 12px;
-			letter-spacing: .1em;
+			letter-spacing: 0.1em;
 			text-transform: uppercase;
-			padding: 1rem .5rem;
+			padding: 1rem 0.5rem;
 			border-bottom: 1px solid rgba(0, 0, 0, 0.33);
 			border-right: 1px solid rgba(0, 0, 0, 0.33);
 			color: #475569;
@@ -197,7 +176,6 @@ const Styles = styled.div`
 	}
 
 	@media (max-width: 1150px) {
-
 		table {
 			td {
 				font-size: 12px;
@@ -214,45 +192,43 @@ const Styles = styled.div`
 			border: 0;
 
 			thead {
-			  border: none;
-			  clip: rect(0 0 0 0);
-			  height: 1px;
-			  margin: -1px;
-			  overflow: hidden;
-			  padding: 0;
-			  position: absolute;
-			  width: 1px;
+				border: none;
+				clip: rect(0 0 0 0);
+				height: 1px;
+				margin: -1px;
+				overflow: hidden;
+				padding: 0;
+				position: absolute;
+				width: 1px;
 			}
 
 			tr {
-			  display: block;
-			  margin-bottom: .625em;
+				display: block;
+				margin-bottom: 0.625em;
 			}
 
 			td {
-			  border-bottom: 1px solid #ddd;
-			  display: block;
-			  font-size: .9em;
-			  text-align: right;
-			  border-right: 0;
+				border-bottom: 1px solid #ddd;
+				display: block;
+				font-size: 0.9em;
+				text-align: right;
+				border-right: 0;
 			}
 
 			td::before {
-			  content: attr(data-label);
-			  float: left;
-			  font-weight: bold;
-			  text-transform: uppercase;
+				content: attr(data-label);
+				float: left;
+				font-weight: bold;
+				text-transform: uppercase;
 			}
 
 			td:last-child {
-			  border-bottom: 0;
+				border-bottom: 0;
 			}
 		}
-
 	}
 
 	@media (max-width: 500px) {
-
 		.pagination {
 			.content {
 				display: flex;
@@ -266,4 +242,4 @@ const Styles = styled.div`
 			}
 		}
 	}
-`
+`;

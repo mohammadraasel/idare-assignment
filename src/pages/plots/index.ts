@@ -1,1 +1,1 @@
-export { default } from './plots'
+export { default } from "./plots";

@@ -1,177 +1,172 @@
-import { useState } from 'react'
-import styled from 'styled-components'
-import CSVDownloader from '../../components/CSVDownloader'
-import Layout from '../../components/Layout'
-import PDFExporter from '../../components/PDFExporter'
-import Plotter from '../../components/Plotter'
-import Table from '../../components/Table'
-import { PlotType } from '../../constants/enums'
-import { useAppSelector } from '../../hooks'
-import { selectTableData } from '../../redux/slices/stats-slice'
+import { useState } from "react";
+import styled from "styled-components";
+import CSVDownloader from "../../components/CSVDownloader";
+import Layout from "../../components/Layout";
+import PDFExporter from "../../components/PDFExporter";
+import Plotter from "../../components/Plotter";
+import Table from "../../components/Table";
+import { PlotType } from "../../constants/enums";
+import { useAppSelector } from "../../hooks";
+import { selectTableData } from "../../redux/slices/stats-slice";
 
 const tabItems = [
 	{
-		label: 'Scatter Plot',
-		value: PlotType.SCATTER
+		label: "Scatter Plot",
+		value: PlotType.SCATTER,
 	},
 	{
-		label: 'Box Plot',
+		label: "Box Plot",
 		value: PlotType.BOX,
 	},
 	{
-		label: 'Histogram',
-		value: PlotType.HISTOGRAM
-	}
-]
+		label: "Histogram",
+		value: PlotType.HISTOGRAM,
+	},
+];
 
 const layoutConfig = {
 	height: 400,
 	width: 500,
-}
+};
 
 const generateRandomNumber = (length: number = 2) => {
-	return Math.floor(Math.random() * (length - 1)) + 1
-}
+	return Math.floor(Math.random() * (length - 1)) + 1;
+};
 
 const PlotsPage = () => {
-	const { columns, data } = useAppSelector(selectTableData)
-	const [activeTab, setActiveTab] = useState<PlotType>(PlotType.SCATTER)
+	const { columns, data } = useAppSelector(selectTableData);
+	const [activeTab, setActiveTab] = useState<PlotType>(PlotType.SCATTER);
 
 	const getPlotDataByType = (type: PlotType) => {
 		switch (type) {
 			case PlotType.SCATTER:
-				return getScatterPlotData()
+				return getScatterPlotData();
 			case PlotType.BOX:
-				return getBoxPlotData()
+				return getBoxPlotData();
 			case PlotType.HISTOGRAM:
-				return getHistogramData()
+				return getHistogramData();
 			default:
-				return []
+				return [];
 		}
-	}
+	};
 
 	const getPlotData = () => {
-		const plotData = {} as any
+		const plotData = {} as any;
 		data.forEach((d: any) => {
-			for (const [key, value] of Object.entries(d)){
+			for (const [key, value] of Object.entries(d)) {
 				if (plotData[key]) {
-					plotData[key].push(value)
+					plotData[key].push(value);
 				} else {
-					plotData[key] = []
-					plotData[key].push(value)
+					plotData[key] = [];
+					plotData[key].push(value);
 				}
 			}
-		})
+		});
 
 		const getRandomCols = () => {
-			const keys = Object.keys(plotData)
-			let rand1 = generateRandomNumber(keys.length)
-			let rand2 = generateRandomNumber(keys.length)
+			const keys = Object.keys(plotData);
+			let rand1 = generateRandomNumber(keys.length);
+			let rand2 = generateRandomNumber(keys.length);
 			while (rand1 === rand2) {
-				rand1 = generateRandomNumber(keys.length)
-				rand2 = generateRandomNumber(keys.length)
+				rand1 = generateRandomNumber(keys.length);
+				rand2 = generateRandomNumber(keys.length);
 			}
 
-			const keyX = keys[rand1]
-			const keyY = keys[rand2]
+			const keyX = keys[rand1];
+			const keyY = keys[rand2];
 
-			return { keyX, keyY }
-		}
+			return { keyX, keyY };
+		};
 
-		return {plotData, ...getRandomCols() }
-	}
+		return { plotData, ...getRandomCols() };
+	};
 
 	const getScatterPlotData = () => {
-		const {plotData, keyX, keyY } = getPlotData()
+		const { plotData, keyX, keyY } = getPlotData();
 		return [
 			{
 				x: plotData[keyX],
-				mode: 'lines+markers',
+				mode: "lines+markers",
 				name: keyX,
-  				type: 'scatter'
+				type: "scatter",
 			},
 			{
 				y: plotData[keyY],
-				mode: 'lines+markers',
+				mode: "lines+markers",
 				name: keyY,
-  				type: 'scatter'
-			}
-		]
-	}
+				type: "scatter",
+			},
+		];
+	};
 	const getBoxPlotData = () => {
-		const {plotData, keyX, keyY } = getPlotData()
+		const { plotData, keyX, keyY } = getPlotData();
 		return [
 			{
 				y: plotData[keyX],
 				name: keyX,
-  				type: 'box'
+				type: "box",
 			},
 			{
 				y: plotData[keyY],
 				name: keyY,
-  				type: 'box'
-			}
-		]
-	}
+				type: "box",
+			},
+		];
+	};
 	const getHistogramData = () => {
-		const {plotData, keyX } = getPlotData()
+		const { plotData, keyX } = getPlotData();
 		return [
 			{
 				x: plotData[keyX],
-				type: 'histogram',
+				type: "histogram",
 				name: keyX,
-			}
-		]
-	}
+			},
+		];
+	};
 
 	if (data.length === 0) {
-		return null
+		return null;
 	}
 
 	return (
 		<Layout>
 			<StyledSection>
 				<div className="action">
-					<CSVDownloader data={data}/>
+					<CSVDownloader data={data} />
 				</div>
 				<Table columns={columns} data={data} />
 			</StyledSection>
 			<StyledSection>
 				<div className="action">
 					<PDFExporter>
-						{
-							tabItems.map((item) => (
-								<Plotter
-									key={item.label}
-									layout={layoutConfig}
-									data={getPlotDataByType(item.value)}
-									title={item.value}
-								/>
-							))
-						}
+						{tabItems.map((item) => (
+							<Plotter
+								key={item.label}
+								layout={layoutConfig}
+								data={getPlotDataByType(item.value)}
+								title={item.value}
+							/>
+						))}
 					</PDFExporter>
 				</div>
 				<div className="tabs">
-					{
-						tabItems.map((tab) => (
-							<div
-								onClick={() => setActiveTab(tab.value)}
-								className={`tab-item ${tab.value === activeTab ? 'active' : ''}`}
-								key={tab.value}
-							>
-								{tab.label}
-							</div>
-						))
-					}
+					{tabItems.map((tab) => (
+						<div
+							onClick={() => setActiveTab(tab.value)}
+							className={`tab-item ${tab.value === activeTab ? "active" : ""}`}
+							key={tab.value}
+						>
+							{tab.label}
+						</div>
+					))}
 				</div>
 				<Plotter data={getPlotDataByType(activeTab)} />
 			</StyledSection>
 		</Layout>
-	)
-}
+	);
+};
 
-export default PlotsPage
-
+export default PlotsPage;
 
 const StyledSection = styled.div`
 	display: flex;
@@ -211,7 +206,6 @@ const StyledSection = styled.div`
 
 	@media (max-width: 768px) {
 		.tabs {
-
 			.tab-item {
 				margin: 0 8px;
 				font-size: 14px;
@@ -219,4 +213,4 @@ const StyledSection = styled.div`
 			}
 		}
 	}
-`
+`;
