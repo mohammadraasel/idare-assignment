@@ -52,6 +52,19 @@
     "@types/react-plotly.js": "2.5.0",
     "@types/react-router-dom": "5.1.8",
     "@types/react-table": "7.7.2",
-    "@types/styled-components": "5.1.12"
+    "@types/styled-components": "5.1.12",
+    "husky": "7.0.2",
+    "lint-staged": "11.1.2",
+    "prettier": "2.3.2"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
