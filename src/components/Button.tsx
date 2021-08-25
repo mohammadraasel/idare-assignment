@@ -29,6 +29,10 @@ const StyledButton = styled.button`
 
 	&.primary {
 		background-color: #4B91C9;
+		transition: 0.2s;
+		:hover {
+			background-color: #4B91E0;
+		}
 	}
 
 	&.alert {
@@ -41,5 +45,10 @@ const StyledButton = styled.button`
 		border: 2px dashed grey;
 		color: black;
 		width: 100%;
+	}
+
+	@media (max-width: 768px) {
+		padding: 8px 16px;
+		font-size: 14px;
 	}
 `

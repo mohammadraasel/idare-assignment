@@ -2,7 +2,7 @@ import React from "react";
 import { PDFExport } from "@progress/kendo-react-pdf";
 import Button from "./Button";
 
-const PDFExporter:React.FC<any> = ({children}) => {
+const PDFExporter:React.FC<any> = ({children, label}) => {
   const pdfExportComponent = React.useRef<PDFExport>(null);
 
 	return (
@@ -16,7 +16,7 @@ const PDFExporter:React.FC<any> = ({children}) => {
 						}
 					}}
 				>
-					Download PDF
+					{label}
 				</Button>
 			</div>
 
@@ -29,6 +29,10 @@ const PDFExporter:React.FC<any> = ({children}) => {
 			</div>
 		</div>
 	);
+}
+
+PDFExporter.defaultProps = {
+	label: 'Download PDF',
 }
 
 export default PDFExporter

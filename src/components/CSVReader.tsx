@@ -7,14 +7,14 @@ import Button from './Button';
 import CloseIcon from './CloseIcon';
 
 
-const CSVReader: React.FC = () => {
+const CSVReader: React.FC<any> = () => {
 
 	const buttonRef = useRef<any>()
 	const dispatch = useAppDispatch()
 
 	const handleOpenDialog = (e:MouseEvent<HTMLElement>) => {
 		if (buttonRef.current) {
-		buttonRef.current.open(e);
+			buttonRef.current.open(e);
 		}
 	}
 
@@ -28,10 +28,8 @@ const CSVReader: React.FC = () => {
 		console.log('---------------------------');
 	}
 
-	const handleOnRemoveFile = (data:any) => {
-		console.log('---------------------------');
-		console.log(data);
-		console.log('---------------------------');
+	const handleOnRemoveFile = () => {
+		dispatch(setData([]))
 	}
 
 	const handleRemoveFile = (e:MouseEvent<HTMLElement>) => {
@@ -57,7 +55,7 @@ const CSVReader: React.FC = () => {
 						onClick={handleOpenDialog}
 						variant='upload'
 					>
-						Click here to upload file
+						Click here to upload a file
 					</Button>
 					<div className="file">
 						<div className="filename">

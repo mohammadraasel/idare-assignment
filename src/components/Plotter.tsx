@@ -11,15 +11,17 @@ const Plotter: React.FC<IPlotterProps>= ({data, title, layout}) => {
 	return (
 		<Plot
 			data={data}
-			layout={ {...layout, title } }
+			layout={{ autosize: true, title, ...layout}}
+			style={{ width: '100%', height: '100%' }}
+			useResizeHandler={true}
       	/>
 	)
 }
 
 Plotter.defaultProps = {
 	data: [],
-	title: 'Plot',
-	layout: {width: 900, height: 500,}
+	title: '',
+	layout: {}
 }
 
 export default Plotter
